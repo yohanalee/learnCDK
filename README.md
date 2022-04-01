@@ -186,7 +186,6 @@ $ sam --version
 We need to prepare the Lambda payload JSON object that will be passed into the Lambda when invoking Lambda locally. Save the following JSON in a file in your project root directory and name it **testEvent.json**
 
 ```json
-// in testEvent.json
 {
     "body": "Hello WiT!",
     "path": "/hello/wit"
