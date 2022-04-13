@@ -22,6 +22,7 @@ By the end of this workshop, you will be able to:
 ## See Also:
 AWS CDK User Guide:
 https://docs.aws.amazon.com/cdk/v2/guide/home.html
+
 AWS CDK Reference:
 https://docs.aws.amazon.com/cdk/api/v2/python/index.html
 
