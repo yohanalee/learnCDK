@@ -2,13 +2,13 @@
 # Welcome Developers!
 Hi there, and thanks for joining us. We can't wait for you to start re-imagining infrastructure-as-code(IaC) with AWS CDK.
 
-The AWS CDK lets you build reliable, scalable, cost-effective applications in the cloud with th econsiderable expressive power of a programming language. 
+The AWS CDK let you build reliable, scalable, cost-effective applications in the cloud with the considerable expressive power of a programming language. 
 
 So what are we going to build? Nothing too fancy...
 
 We will spend some time setting up your development environment and learning a little about how to work with the CDK Toolkit to deploy your app to an AWS environment.
 
-Then, you will write a little "Good Evening lades" Lambda function and front it with an API Gateway endpoint so users can call it via an HTTP request.
+Then, you will write a little "Good Evening ladies" Lambda function and front it with an API Gateway endpoint so users can call it via an HTTP request.
 
 Next, we will modify our Lambda function to include CRUD (create, retrieve, update, delete) operations for the top 5 inspiring women in tech!
 
