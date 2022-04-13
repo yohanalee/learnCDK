@@ -106,16 +106,31 @@ $ cdk bootstrap
 Let's take a look at the AWS CloudFormation Console. You will likely see something like this (if you don't, make sure you are in the correct region):
 ![](images/cfn_CDKToolKit.png)
 
+Note: If you hit the following error, please configure your AWS account.
+![](images/error_bootstrap.png)
+
+Open your AWS credentials files by executing the commands below:
+
+```bash
+$ cd ..
+$ cd .aws
+$ code .
+```
+
+In the `config` file, give a **profile name** and enter the **region name** and **output**.
+![](images/cred_config.png)
+
+In the `credentials` file, copy the **profile name** from `config` and enter **Access Key ID** and **Secret Access Key**. The Access Key ID can be found by logging into the **AWS console > IAM > Users**. If you have lost your Secret Access Key, you may create a new user. 
+![](images/cred_credentials.png)
+
 
 # 2. Let's Deploy!
 
-We wil finally write some CDK code. In this workshop, we will add a Lambda function with an API Gateway endpoint infront of it. The Lambda function interacts with DynamoDB, and returns a response to API Gateway then API Gateway returns a response to you. 
-![](images/architecture_diag_overall.png)
-
+We will finally write some CDK code. In this workshop, we will add a Lambda function with an API Gateway endpoint in front of it. The Lambda function interacts with DynamoDB and returns a response to API Gateway, then API Gateway returns a response to you. 
  
 ## 2.1. Deploy Lambda
-In this section we will focus on building the API Gateway and Lambda function. 
-Users will be able to hit any URl in the endpoint and the'll receive a heart warming greeting from our function.
+In this section, we will focus on building the API Gateway and Lambda function. 
+Users will be able to hit any URL in the endpoint, and they'll receive a heartwarming greeting from our function.
 ![](images/architecture_diag_api.png)
 
 Create a directory **lambda** in the root of your project tree. Add a file called **lambda/hello.py** with the following contents:
@@ -134,7 +149,7 @@ def handler(event, context):
         'body': 'Hello, CDK! You have hit {}\n'.format(event['path'])
     }
 ```
-This is a simple Lambda function which returns the text "Hello CDK! You've hit [url path]". The function's output also includes the HTTP status code and HTTP headers. These are used by API Gateway to formulate the HTTP response to the user.
+This is a simple Lambda function that returns the text "Hello CDK! You've hit [url path]". The function's output also includes the HTTP status code and HTTP headers. These are used by API Gateway to formulate the HTTP response to the user.
 
 ### 2.1.1. AWS Construct Library 
 The AWS CDK is shipped with an extensive library of constructs called the **AWS Construct Library**. 
@@ -142,7 +157,7 @@ The AWS CDK is shipped with an extensive library of constructs called the **AWS 
 The construct library is divided into modules, one for each AWS service.
 ![](images/aws_constructs_lib.png)
 
-For example, if you want to define an AWS Lambda function, we will need to use the AWS Lambda construct library.
+For example, if you want to define an AWS Lambda function, we need to use the AWS Lambda construct library.
 
 To discover and learn about AWS construct, you can browse the AWS Construct Library reference _(supports Python, Java, .NET)_ by entering the following command:
 
@@ -176,15 +191,15 @@ class LearnCdkStack(Stack):
 ```
 
 ### 2.1.3. Testing the Lambda function locally
-Let us test our Lambda function locally. Local testing tightens the feedback loop by making it possible for you to find and troubleshoot issues that you might run into before deploying to the cloud.
+Let's test our Lambda function locally. Local testing tightens the feedback loop by making it possible to find and troubleshoot issues that you might run into before deploying to the cloud.
 
-Run sam **--version** to verify that you have successfully installed AWS SAM CLI.
+Run `sam --version` to verify that you have successfully installed **AWS SAM CLI**.
 
 ```bash
 $ sam --version
 ```
 
-We need to prepare the Lambda payload JSON object that will be passed into the Lambda when invoking Lambda locally. Save the following JSON in a file in your project root directory and name it **testEvent.json**
+We need to prepare the Lambda payload JSON object that will be passed into Lambda when invoking Lambda locally. Save the following JSON in a file in your project root directory and name it **testEvent.json**
 
 ```json
 {
@@ -201,7 +216,7 @@ $ cdk synth
 
 You would be able to see the CloudFormation template being printed out. This indicates that **cdk synth** command ran successfully and there is no error in your **learn_cdk/learn_cdk_stack.py**
 
-Now, change directory into **cdk.out** folder
+Now, change the directory into **cdk.out** folder
 
 ```bash
 $ cd cdk.out
