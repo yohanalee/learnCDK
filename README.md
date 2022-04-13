@@ -84,7 +84,7 @@ $ pip install -r requirements.txt
 
 ## 1.4. Project Structure
 Now's a good time to open the project in your favourite IDE and explore.
-If you use VSCode, you can just type `code .` within the project directory.
+If you use VSCode, you can simply type `code .` within the project directory.
 
 ### 1.4.1. Explore your project directory
 ![](images/folder_structure.png)
