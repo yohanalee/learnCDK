@@ -266,7 +266,9 @@ The code should be loaded onto the screen.
 ![](images/lambda_handler.png)
 
 Click on **Test** and configure the test event as below. 
+
 **Event name:** test
+
 **Template:** apigateway-aws-proxy
 
 ![](images/lambda_test.png)
@@ -275,7 +277,7 @@ Click on **Test** and configure the test event as below.
 ![](images/lambda_status_200.png)
 
 ### 2.1.6. Update the Lambda function
-Let's make some changes and update the handler function. In **lambda/hello.py**:
+Let's make some changes and make some updates to the handler function. In **lambda/hello.py**:
 ```python
 import json
 
@@ -294,15 +296,15 @@ Lets deploy the latest changes.
 $ cdk deploy --hotswap
 ```
 ![](images/cdk_deploy_hotswap.png)
-Note: with `cdk deploy --hotswap`, we can speed up the deployment time, instead of a CloudFormation deployment.
+Note: since we have only changed the code of a Lambda function and nothing else in CDK, we can utilise the commend `cdk deploy --hotswap` to speed up the deployment time by skipping CloudFormation and updating the affected resource directly.
 
-Let's go to the **AWS Lambda** console and double check if the code changes!
+Let's go to the **AWS Lambda** console and double-check if the code changes!
 ![](images/lambda_handler_updated.png)
 
 ## 2.2. Deploy API Gateway
-Next step is to add an API Gateway in front of our function. API Gateway will expose a public HTTP endpoint that anyone on the internet an hit with an HTTP client such as _curl_ or a web browser.
+The next step is to add an API Gateway in front of our function. API Gateway will expose a public HTTP endpoint that anyone on the internet can hit with an HTTP client such as _curl_ or a web browser.
 
-We will use Lambda proxy integration mounted to the root of the API. This means that any requests to any URL path will be proxied directly to our Lambda function, and the response from the function will be returned back to the user. 
+We will use Lambda proxy integration mounted to the root of the API. This means that any requests to any URL path will be proxied directly to our Lambda function, and the response from the function will be returned to the user. 
 
 ### 2.2.1. Add LambdaRestAPI Construct
 Let's add a LambdaRestApi construct to our stack. Here, we define an API endpoint and associated it with our Lambda function. In **learn_cdk/learn_cdk_stack.py**:
@@ -354,20 +356,20 @@ LearnCdkStack.myapiEndpoint8EB17201 = https://xxxxxxxxxx.execute-api.eu-west-3.a
 ```
 Note: This is a stack output that's automatically added by the API Gateway construct and includes the URL of the API Gateway endpoint.
 
-Let's try to hit the endpoint with the web browser. Copy the URL and paste on your web browser
+Let's try to hit the endpoint with the web browser. Copy the URL and paste it into your web browser
 ![](images/apigw.png)
 
-Good Job! You have successfully created a web application build on AWS Lambda and fronted by an AWS API Gateway! 
+Good Job! You have successfully created a web application built on AWS Lambda and fronted by an AWS API Gateway! 
 
 ## 2.3. Deploy Amazon DynamoDB 
-Now, let's enhance our application with CRUD (Create, Retrieve, Update, Delete) features. For this, we will be exploring with **Amazon DynamoDB**, a NoSQL database. 
+Now, let's enhance our application with CRUD (Create, Retrieve, Update, Delete) features. For this, we will be exploring **Amazon DynamoDB**, a NoSQL database. 
 ![](images/architecture_diag_dynamo.png)
 
 
 ### 2.3.1. Add DynamoDB API Construct
 In **learn_cdk/learn_cdk_stack.py**, add the DynamoDB API Construct. 
-We will be adding an IAM policy to allow read/write access to our DynamoDB table from our Lambda function.
-We will be adding environment variable as well to the lambda function. 
+We will be adding an IAM policy to allow read/write access to our DynamoDB table from our Lambda function. Also,
+we will be adding the environment variable to our lambda function. 
 
 ```python
 from aws_cdk import (
@@ -404,8 +406,9 @@ class LearnCdkStack(Stack):
 ```
 
 ### 2.3.2. Create POST REST API 
-Let's add the top 5 inspring women who changed the tech world! To do that, we will have to modify out lambda function.
-In **lambda/hello.py**, update the existing code:
+Let's add the top 5 inspiring women who changed the tech world! To do that, we will have to modify our Lambda function.
+
+First, in **lambda/hello.py**, update the existing code:
 
 ```python
 import json
@@ -433,23 +436,23 @@ def _200(response_body):
     }
 
 ```
-Note: Import new packages and intialise dynabodb client and dynamodb table. 
-{{explain boto3 and other imported libraries}}
 
 Let's deploy the latest changes:
+
 ```bash
 $ cdk deploy
 ```
-Note: Since we are deploying a DynamoDB table, we are updating our stack. Hence, we have to do `cdk deploy` instead of `cdk deploy --hotswap`.
+
+Note: We are updating our stack since we are deploying a DynamoDB table. Hence, we have to do `cdk deploy` instead of `cdk deploy --hotswap`.
 
 Output should look like this:
 ![](images/cdk_deploy_ddb.png)
 
-Let's head over to **CloudFormation** console to see the output
+Let's head over to **CloudFormation** console to see the output.
 ![](images/cfn_ddb.png)
 
 ### 2.3.3. Check out contents of Lambda function of _events_ 
-Let's check out the contents of _event_. 
+Secondly, let's check out the contents of _event_. 
 I will be using **Insomnia** to test my REST API.
 
 
@@ -470,7 +473,8 @@ Note: Image is non-exhausive. We are interested in **httpMethod**. In this works
 
 
 ### 2.3.3. Add members to WiT!
-Let's create a function to add the top 5 inspring women who changed the tech world!
+Now, let's create a function to add the top 5 inspiring women who changed the tech world!
+
 In **lambda/hello.py**, add the following method to the **handler** function:
 ```python
 def handler(event, context):
@@ -482,28 +486,30 @@ def handler(event, context):
             ddb_table.put_item(Item=item)
         return _200(request_body)
 ```
-Let's deploy our latest chanegs.
+Let's deploy our latest changes:
+
 ```bash
 $ cdk deploy --hotswap
 ```
 You should see the following output:
 ![](images/lambda_deploy_post.png)
 
-Head over to **Insomnia** (or other API Test tool) and send a **POST** request to add the first inspiring women to our table!
+Head over to **Insomnia** (or other API Test tool) and send a **POST** request to add the first inspiring woman to our table!
 
 Hit **Send Request** again. Output should be like this:
 ![](images/lambda_add1.png)
 
 
-Let's head over to **DynamoDB** console to ensure that we have our first record in our table.
+Let's head over to the **DynamoDB** console to ensure that we have our first record in our table.
 ![](images/cfn_ddb.png)
 
 ![](images/ddb_console_1.png)
 
 ![](images/ddb_console_2.png)
 
-Great! Now let's add a few more inspiring ladies to our table
-In **Insomnia**, add the following record to our table:
+Great! Now let's add a few more inspiring ladies to our table.
+
+In **Insomnia**, add the following records to our table:
 ```http
 [
     {
@@ -536,11 +542,11 @@ In **Insomnia**, add the following record to our table:
 Hit **Send** and you should see the following output
 ![](images/lambda_add5.png)
 
-Let's head over to **DynamoDB** console to verify our table.
+Let's head over to the **DynamoDB** console and verify our table.
 ![](images/ddb_console_3.png)
 
 ### 2.3.4. Retrieve members of WiT!
-Sweet, now that we have added items in our table, let's create a **retrieve** method to get all the inspring women in our table.
+Sweet, now that we have added items to our table, let's create a **retrieve** method to get all the inspiring women from our table.
 
 In **lambda/hello.py**, add the following **GET** method:
 ```python
@@ -566,13 +572,14 @@ Output should be the following:
 ![](images/cdk_deploy_hotswap1.png)
 
 Head over to **Insomnia** and create a new **GET** endpoint. 
-Hit **Send** and you should see the following:
+Hit **Send**, and you should see the following:
 ![](images/insomnia_getAll.png)
 
 ### 2.3.5. Update existing member's information
-Oh no! We have added the wrong information for **Hedy Lamarr**. She is the **inventor of WiFi** instead or Internet. Let's **update** her record.
+Oh no! We have added the wrong information for **Hedy Lamarr**. She is the **inventor of WiFi** instead of the Internet. So let's **update** her record.
 
 In **lambda/hello.py**, add the following **PUT** method:
+
 ```python
 def handler(event, context):
     HTTP_REQUEST = event["httpMethod"]
@@ -595,11 +602,13 @@ def handler(event, context):
         ddb_table.put_item(Item=item_to_update)
         return _200(item_to_update)
 ```
-Let's deploy our changes
+Let's deploy our changes:
+
 ```bash
 $ cdk deploy --hotswap
 ```
-Output should be the following:
+
+Output should look like this:
 ![](images/cdk_deploy_hotswap2.png)
 
 Let's head over to **Insomnia** and create a new **PUT** request. 
@@ -621,7 +630,8 @@ Let's head to **DynamoDB** to verify if the table is updated.
 Perfect! And the very last step, let's clean up our table by removing the **test entry**.
 
 ### 2.3.5. Delete test entries in WiT!
-In **lambda/hello.py**, add the following code
+In **lambda/hello.py**, add the following code:
+
 ```python
 def handler(event, context):
     HTTP_REQUEST = event["httpMethod"]
@@ -649,21 +659,26 @@ def handler(event, context):
         response = ddb_table.delete_item(Key={"id": request_body["id"]})
         return _200(response)
 ```
-Let's deploy our changes
+
+Let's deploy our changes:
+
 ```bash
 $ cdk deploy --hotswap
 ```
+
 Output should be the following:
 ![](images/cdk_deploy_hotswap3.png)
 
 Let's head over to **Insomnia** and create a new **DELETE** request. 
 
-In **Insomnia**, we will be deleting id = 99.
+In **Insomnia**, we will be deleting **id = 99**.
+
 ```json
 {
     "id":"99"
 }
 ```
+
 Hit **Send**. You should see the following output:
 ![](images/insomnia_delete.png)
 
@@ -673,12 +688,16 @@ Again, let's head to **DynamoDB** to verify if the table is updated.
 Hooray! The table is clean! We have successfully designed, implemented and deployed a fully functional REST API solution with AWS CDK.
 
 # 3. Teardown
-**To avoid incurring unexpected charges, it's a best practices to teardown all resources.**
-Fortuantely, we can do it with a single command!
+
+**To avoid incurring unexpected charges, it's a best practice to teardown all resources.**
+
+Fortunately, we can do it with a single command!
+
 ```bash
 $ cdk destroy
 ```
-Navigate to the **Cloudformation Console** and ensure that your stacks have been successfully deleted.
+
+Navigate to the **CloudFormation Console** and ensure that your stacks have been deleted.
 
 # 4. Congratulations!
 You have successfully finished our **Developing Serverless REST API with AWS CDK** workshop!
@@ -686,7 +705,7 @@ In this workshop, you have learned how to:
 * Create a new CDK project in Python `cdk init --language python`
 * Add resources to your CDK application stack
 * Use `cdk diff` and `cdk deploy` to deploy your app to an AWS environment
-* Use the AWS Lambda, API Gateway and DynamoDB AWS construct libraries
+* Use the AWS Lambda, API Gateway, and DynamoDB AWS construct libraries
 
 # 4.1. What's next?
 Challenge yourself further by **building a frontend UI**. Try to design a beautiful user interface for your users to perform CRUD features quickly with CDK! You may reference from:
