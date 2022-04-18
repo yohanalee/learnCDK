@@ -270,7 +270,7 @@ Click on **Test**.
 Configure the test event as below.
  * **Event name:** test
  * **Template:** apigateway-aws-proxy
-    ![](images/lambda_test.png)
+![](images/lambda_test.png)
 
     
 
