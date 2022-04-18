@@ -265,7 +265,9 @@ Open the **Lambda** function in a new window.
 The code should be loaded onto the screen. 
 ![](images/lambda_handler.png)
 
-Click on **Test** and configure the test event as below. 
+Click on **Test**.
+
+Configure the test event as below. 
 
 **Event name:** test
 
@@ -472,7 +474,7 @@ Hit **Send Request**. You should see the following output:
 Note: Image is non-exhausive. We are interested in **httpMethod**. In this workshop, we will be interested in four http methods - POST, GET, PUT and DELETE.
 
 
-### 2.3.3. Add members to WiT!
+### 2.3.4. Add members to WiT!
 Now, let's create a function to add the top 5 inspiring women who changed the tech world!
 
 In **lambda/hello.py**, add the following method to the **handler** function:
@@ -496,8 +498,10 @@ You should see the following output:
 
 Head over to **Insomnia** (or other API Test tool) and send a **POST** request to add the first inspiring woman to our table!
 
+Copy the endpoint link and paste to Insomnia.
+
 Hit **Send Request** again. Output should be like this:
-![](images/lambda_add1.png)
+![](images/lambda_add6.png)
 
 
 Let's head over to the **DynamoDB** console to ensure that we have our first record in our table.
@@ -545,7 +549,7 @@ Hit **Send** and you should see the following output
 Let's head over to the **DynamoDB** console and verify our table.
 ![](images/ddb_console_3.png)
 
-### 2.3.4. Retrieve members of WiT!
+### 2.3.5. Retrieve members of WiT!
 Sweet, now that we have added items to our table, let's create a **retrieve** method to get all the inspiring women from our table.
 
 In **lambda/hello.py**, add the following **GET** method:
@@ -575,7 +579,7 @@ Head over to **Insomnia** and create a new **GET** endpoint.
 Hit **Send**, and you should see the following:
 ![](images/insomnia_getAll.png)
 
-### 2.3.5. Update existing member's information
+### 2.3.6. Update existing member's information
 Oh no! We have added the wrong information for **Hedy Lamarr**. She is the **inventor of WiFi** instead of the Internet. So let's **update** her record.
 
 In **lambda/hello.py**, add the following **PUT** method:
@@ -629,7 +633,7 @@ Let's head to **DynamoDB** to verify if the table is updated.
 
 Perfect! And the very last step, let's clean up our table by removing the **test entry**.
 
-### 2.3.5. Delete test entries in WiT!
+### 2.3.7. Delete test entries in WiT!
 In **lambda/hello.py**, add the following code:
 
 ```python
