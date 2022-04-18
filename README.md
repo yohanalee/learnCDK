@@ -267,8 +267,10 @@ The code should be loaded onto the screen.
 
 Click on **Test**.
 
-Configure the test event as below. 
+Configure the test event as below.
+
     **Event name:** test
+    
     **Template:** apigateway-aws-proxy
     ![](images/lambda_test.png)
 
